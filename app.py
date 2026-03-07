@@ -12,7 +12,7 @@ def load_model():
 
 tokenizer, model = load_model()
 
-st.title("Fake Job Detection using BERT")
+st.title("Fake Job Detection")
 
 text = st.text_area("Enter Job Description")
 

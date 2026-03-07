@@ -13,13 +13,17 @@ def load_model():
 
 tokenizer, model = load_model()
 
-st.title("Fake Job Detection Dashboard")
+st.title("Fake Job Detection")
 
 # Initialize history
 if "history" not in st.session_state:
     st.session_state.history = []
 
 text = st.text_area("Enter Job Description")
+
+# -------------------
+# Predict Button
+# -------------------
 
 if st.button("Predict"):
 
@@ -39,66 +43,49 @@ if st.button("Predict"):
 
     label = "Fake" if pred == 1 else "Real"
 
+    # store full description
     st.session_state.history.append({
-        "Job Description": text,
-        "Prediction": label
+        "description": text,
+        "label": label
     })
 
-# ----------------------
-# Dashboard Metrics
-# ----------------------
+    # show only prediction
+    if label == "Fake":
+        st.error("⚠️ Fake Job Posting")
+    else:
+        st.success("✅ Real Job Posting")
 
-fake_count = sum(1 for x in st.session_state.history if x["Prediction"] == "Fake")
-real_count = sum(1 for x in st.session_state.history if x["Prediction"] == "Real")
+# -------------------
+# History Buttons
+# -------------------
 
-st.subheader("Dashboard")
+st.subheader("History Controls")
 
 col1, col2 = st.columns(2)
 
-col1.metric("⚠️ Fake Jobs Detected", fake_count)
-col2.metric("✅ Real Jobs Detected", real_count)
+show_fake = col1.button("Show Fake History")
+show_real = col2.button("Show Real History")
 
-# ----------------------
-# Prediction Boxes
-# ----------------------
+# -------------------
+# Fake History
+# -------------------
 
-st.subheader("Prediction Results")
+if show_fake:
+    st.error("⚠️ Fake Job History")
 
-fake_col, real_col = st.columns(2)
-
-with fake_col:
-    st.error("⚠️ Fake Job Postings")
     for item in st.session_state.history:
-        if item["Prediction"] == "Fake":
-            st.write(item["Job Description"])
+        if item["label"] == "Fake":
+            st.write(item["description"])
+            st.divider()
 
-with real_col:
-    st.success("✅ Real Job Postings")
+# -------------------
+# Real History
+# -------------------
+
+if show_real:
+    st.success("✅ Real Job History")
+
     for item in st.session_state.history:
-        if item["Prediction"] == "Real":
-            st.write(item["Job Description"])
-
-# ----------------------
-# History Table
-# ----------------------
-
-st.subheader("Prediction History")
-
-df = pd.DataFrame(st.session_state.history)
-
-if not df.empty:
-    st.dataframe(df)
-
-# ----------------------
-# Download CSV
-# ----------------------
-
-if not df.empty:
-    csv = df.to_csv(index=False).encode("utf-8")
-
-    st.download_button(
-        label="📥 Download History as CSV",
-        data=csv,
-        file_name="job_predictions_history.csv",
-        mime="text/csv",
-    )
+        if item["label"] == "Real":
+            st.write(item["description"])
+            st.divider()

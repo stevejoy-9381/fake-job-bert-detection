@@ -2,7 +2,7 @@
 fastapi
 uvicorn
 transformers
-torch==2.0.1
+torch
 safetensors
 pymongo
 python-3.10.13

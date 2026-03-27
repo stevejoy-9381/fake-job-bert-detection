@@ -1,18 +1,24 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
+ 
+
 from app.model import predict
 from app.db import collection
 
 app = FastAPI()
 
+# Optional: Hugging Face / environment port (not required with Docker CMD)
+port = int(os.environ.get("PORT", 7860))
+
 # Request schema
 class JobRequest(BaseModel):
     description: str
 
-# Home route (optional but useful)
+# Home route
 @app.get("/")
 def home():
-    return {"message": "API is running"}
+    return {"message": "Fake Job Detection API is running"}
 
 # Predict + Store
 @app.post("/predict")

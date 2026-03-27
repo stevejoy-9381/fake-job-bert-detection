@@ -1,9 +1,6 @@
-
 fastapi
 uvicorn
 transformers
 torch
 safetensors
 pymongo
-python-3.10.13
- 

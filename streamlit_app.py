@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # 👉 Change this when you deploy backend
-API_URL = "http://127.0.0.1:8000"
+API_URL = "http://192.168.1.103:8000"
 
 # -----------------------
 # TITLE
@@ -41,8 +41,7 @@ if st.button("🔍 Predict", use_container_width=True):
                 response = requests.post(
                     f"{API_URL}/predict",
                     json={"description": text}
-                )
-
+)
                 result = response.json()
 
             col1, col2 = st.columns(2)

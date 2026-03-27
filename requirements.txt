@@ -1,4 +1,8 @@
-streamlit
-torch
+
+fastapi
+uvicorn
 transformers
+torch==2.0.1
 safetensors
+pymongo
+ 

@@ -5,4 +5,5 @@ transformers
 torch==2.0.1
 safetensors
 pymongo
+python-3.10.13
  

@@ -1,4 +1,4 @@
- from functools import lru_cache
+from functools import lru_cache
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
@@ -10,6 +10,9 @@ MODEL_NAME = "stevenson9381/fake-job-bert"
 def get_model():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+
+    model.to("cpu")   # ✅ ensure runs on CPU (important for Hugging Face)
+
     model.eval()  # important for inference
     return model, tokenizer
 
@@ -32,7 +35,10 @@ def predict(text: str):
 
     pred = torch.argmax(probs, dim=1).item()
 
-    label = "Fake" if pred == 1 else "Real"
+    # ✅ safer label mapping
+    labels = ["Real", "Fake"]
+    label = labels[pred]
+
     confidence = probs[0][pred].item()
 
     return {

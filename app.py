@@ -1,4 +1,4 @@
- import streamlit as st
+import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 # Model name

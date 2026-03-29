@@ -1,10 +1,10 @@
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
-# Model name (downloads automatically)
+# Model name
 MODEL_NAME = "stevenson9381/fake-job-bert"
 
-# Cache model (VERY IMPORTANT for deployment)
+# Load model (cached)
 @st.cache_resource
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -34,13 +34,10 @@ if st.button("Predict"):
         with st.spinner("Analyzing..."):
             result = classifier(user_input)
 
-        st.write(result)  # debug (remove later)
-
         label = result[0]["label"]
-        score = result[0]["score"]
 
-        # Adjust based on your model labels
-        if label in ["LABEL_0", "FAKE"]:
-            st.error(f"🚨 Fake Job\nConfidence: {score:.2f}")
+        # FIXED mapping
+        if label in ["LABEL_1", "FAKE"]:
+            st.error("🚨 Fake Job")
         else:
-            st.success(f"✅ Real Job\nConfidence: {score:.2f}")
+            st.success("✅ Real Job")
